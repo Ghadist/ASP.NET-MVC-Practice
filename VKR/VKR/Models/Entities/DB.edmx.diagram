@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="65d6508efd4e46db905862ce175cc31f" Name="Diagram1">
+        <EntityTypeShape EntityType="VKRModel.Addressee" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="VKRModel.Addressee_Numbers" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="VKRModel.Datum" Width="1.5" PointX="8" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="VKRModel.Phone_Numbers" Width="1.5" PointX="0.75" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="VKRModel.System_role" Width="1.5" PointX="2.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="VKRModel.Transducer" Width="1.5" PointX="5.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="VKRModel.User" Width="1.5" PointX="5" PointY="3.875" IsExpanded="true" />
+        <AssociationConnector Association="VKRModel.Addressee_with_numbers" ManuallyRouted="false" />
+        <AssociationConnector Association="VKRModel.Numbers_of_addressees" ManuallyRouted="false" />
+        <AssociationConnector Association="VKRModel.Transducer_data" ManuallyRouted="false" />
+        <AssociationConnector Association="VKRModel.User_with_role" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

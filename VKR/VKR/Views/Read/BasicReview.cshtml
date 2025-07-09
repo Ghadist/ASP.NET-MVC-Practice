@@ -1,0 +1,31 @@
+﻿@model bool
+@{
+    ViewBag.Title = "Базовый отчёт";
+}
+
+@{
+    ViewBag.BodyClass = "crud-basic";
+}
+
+<div class="name-with-button">
+    <h2 class="subname">Базовый отчёт</h2>
+</div>
+
+<div class="crud-selectors-alt">
+    <div class="label-data">
+        @if (Model == true)
+        {
+            <p>Готово! Базовый отчёт составлен успешно!</p>
+        }
+        else
+        {
+            <p>Ошибка. Отчёт не составлен.</p>
+        }
+    </div>
+
+    <div class="label-data">
+        <button class="add" onclick="location.href='@Url.Action("Show", "Read")'">
+            <span class="but-text">На главную</span>
+        </button>
+    </div>
+</div>

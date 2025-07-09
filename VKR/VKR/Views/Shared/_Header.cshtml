@@ -1,0 +1,25 @@
+﻿<div class="header">
+    <div class="hl">
+        @Html.ActionLink("Погодная станция", "Show", "Read", null, new { @class = "no-underline" })
+    </div>
+    <div class="hc">
+        @if (User.IsInRole("ADMINISTRATOR"))
+        {
+            <div class="hcEl">@Html.ActionLink("Список адресатов", "ListOfAddressees", "Read", null, new { @class = "no-underline" })</div>
+            <div class="hcEl">@Html.ActionLink("Составить базовый отчёт", "BasicReview", "Read", null, new { @class = "no-underline" })</div>
+            <div class="hcEl">@Html.ActionLink("Анализ данных", "Graphics", "Read", null, new { @class = "no-underline" })</div>
+            <div class="hcEl">@Html.ActionLink("Отправить SMS", "SendSms", "Sms", null, new { @class = "no-underline" })</div>
+        }
+    </div>
+    <div class="hr">
+        @if (!User.Identity.IsAuthenticated)
+        {
+            <div class="hcEl">@Html.ActionLink("Вход", "Login", "Account", null, new { @class = "no-underline" })</div>
+        }
+        else
+        {
+            <div class="hcEl">@Html.ActionLink(User.Identity.Name, "Show", "Read", null, new { @class = "no-underline" })</div>
+            <div class="hcEl">@Html.ActionLink("Выход", "LogOut", "Account", null, new { @class = "no-underline" })</div>
+        }
+    </div>
+    </div>
