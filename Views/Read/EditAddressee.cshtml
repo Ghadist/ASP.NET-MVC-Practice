@@ -1,0 +1,42 @@
+﻿@model VKR.Models.Entities.Addressee
+
+@{
+    ViewBag.Title = "Редактирование адресата";
+}
+
+@{
+    ViewBag.BodyClass = "crud-basic";
+}
+
+<div class="name-with-button-alt">
+    <h2 class="subname">Редактирование адресата</h2>
+
+    <button class="add" onclick="location.href='@Url.Action("ListOfAddressees", "Read")'">
+        <span class="but-text">Отмена</span>
+    </button>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="crud-selectors">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ID)
+
+        <div class="label-data">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="label-data">
+            <button class="crud-button" type="submit">
+                <span class="but-text">Сохранить</span>
+            </button>
+        </div>
+    </div>
+}

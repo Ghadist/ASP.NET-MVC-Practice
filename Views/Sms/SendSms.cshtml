@@ -1,0 +1,81 @@
+﻿@model VKR.Models.ViewModels.SmsVM
+
+@{
+    ViewBag.Title = "Отправка SMS";
+}
+
+@{
+    ViewBag.BodyClass = "crud-basic";
+}
+
+<div class="name-with-button-alt">
+    <h2 class="subname-alt">Отправка SMS</h2>
+
+    <button class="add" onclick="location.href='@Url.Action("Show", "Read")'">
+        <span class="but-text">Отмена</span>
+    </button>
+</div>
+
+<div>
+    <form id="smsForm" method="post" action="/Sms/SendSms"class="crud-selectors">
+        @Html.AntiForgeryToken()
+
+        <div class="label-data">
+            @Html.LabelFor(model => model.SelectedAddresseeId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.SelectedAddresseeId, Model.Addressees, "-- Выберите адресата --", new { @id = "addresseeSelect", @class = "form-control", required = "required" })
+            </div>
+        </div>
+
+        <div class="label-data">
+            @Html.LabelFor(model => model.SelectedPhoneId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.SelectedPhoneId, Model.PhoneNumbers, "-- Сначала выберите адресата --", new { @id = "phoneSelect", @class = "form-control", required = "required" })
+            </div>
+        </div>
+
+        <div class="label-data">
+            @Html.LabelFor(model => model.Message, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.Message, new { @class = "form-control", required = "required" })
+            </div>
+        </div>
+
+        <div class="label-data">
+            <button class="crud-button" type="submit">
+                <span class="but-text">Отправить</span>
+            </button>
+        </div>
+
+
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        $('#addresseeSelect').change(function () {
+            var addresseeId = $(this).val();
+
+            if (addresseeId) {
+                $.get('/Sms/GetPhoneNumbers', { addresseeId: addresseeId }, function (phones) {
+                    var phoneSelect = $('#phoneSelect');
+                    phoneSelect.empty();
+                    phoneSelect.append($('<option>', { value: '', text: '-- Выберите номер --' }));
+                    phones.forEach(function (phone) {
+                        phoneSelect.append($('<option>', {
+                            value: phone.Id,
+                            text: phone.Value
+                        }));
+                    });
+                });
+            }
+        });
+
+        $('#smsForm').submit(function (e) {
+            e.preventDefault();
+            $.post($(this).attr('action'), $(this).serialize(), function (response) {
+                alert(response.message);
+            });
+        });
+    </script>
+}

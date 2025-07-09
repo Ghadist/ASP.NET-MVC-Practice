@@ -1,0 +1,129 @@
+﻿@{
+    ViewBag.Title = "Графики погодных данных";
+}
+
+@{
+    ViewBag.BodyClass = "crud-basic";
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+
+    <!-- Подключаем Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Форма для выбора даты -->
+        @using (Html.BeginForm("GetData", "DataVM", FormMethod.Post, new { id = "dateForm" }))
+        {
+            <div class="name-with-button-graphics">
+                <h2 class="subname-alt">Выберите день для отображения графиков</h2>
+
+                <div class="graphics-interface">
+                    <input type="date" name="selectedDate" id="selectedDate" class="form-control" required />
+
+                    <button class="crud-button-alt" type="submit">
+                        <span class="but-text">Построить</span>
+                    </button>
+                </div>
+            </div>
+        }
+
+        <div id="charts" style="margin-top: 30px;">
+            
+            <canvas id="lm75aChart" width="400" height="200"></canvas>
+            <canvas id="dht22Chart" width="400" height="200"></canvas>
+            <canvas id="bmp280Chart" width="400" height="200"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Функция для отправки формы и получения данных
+        document.getElementById('dateForm').onsubmit = function (e) {
+            e.preventDefault();
+
+            const selectedDate = document.getElementById('selectedDate').value;
+
+            
+            fetch('@Url.Action("GetData", "Read")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ selectedDate: selectedDate })
+            })
+            .then(response => response.json())
+            .then(data => {
+                
+                const lm75aData = [];
+                const dht22Data = [];
+                const bmp280Data = [];
+                const timeLabels = [];
+
+                
+                data.data.forEach(item => {
+                    
+                    const timestamp = parseInt(item.Datetime.match(/\d+/)[0]); 
+                    const date = new Date(timestamp);
+
+                    
+                    const formattedTime = date.toLocaleTimeString('ru-RU', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+
+                    timeLabels.push(formattedTime);
+                    lm75aData.push(item.LM75A ?? null);
+                    dht22Data.push(item.DHT22 ?? null);
+                    bmp280Data.push(item.BMP280 ?? null);
+                });
+
+                
+                buildChart('lm75aChart', 'Температура', timeLabels, lm75aData);
+                buildChart('dht22Chart', 'Влажность', timeLabels, dht22Data);
+                buildChart('bmp280Chart', 'Давление', timeLabels, bmp280Data);
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        };
+
+        
+        function buildChart(chartId, label, timeLabels, data) {
+            const ctx = document.getElementById(chartId).getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: timeLabels,
+                    datasets: [{
+                        label: label,
+                        data: data,
+                        borderColor: '#4799b7',
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Время'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Значение'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

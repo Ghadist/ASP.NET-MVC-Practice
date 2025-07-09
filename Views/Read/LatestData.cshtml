@@ -1,0 +1,20 @@
+﻿@model VKR.Models.ViewModels.DataVM
+
+<table>
+    <thead>
+        <tr class="trHead">
+            <th>Дата и время</th>
+            <th>Температура</th>
+            <th>Давление</th>
+            <th>Влажность</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Model.Datetime</td>
+            <td>@Model.LM75A°C</td>
+            <td>@Model.BMP280 мм. рт. ст.</td>
+            <td>@Model.DHT22%</td>
+        </tr>
+    </tbody>
+</table>

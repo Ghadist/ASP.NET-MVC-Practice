@@ -1,0 +1,47 @@
+﻿@{
+    Layout = null;
+}
+@model List<VKR.Models.ViewModels.PhoneNumbersVM>
+
+@*<p></p>*@
+
+<div class="name-with-button">
+    <h2 class="subname">Номера телефонов в системе</h2>
+
+    <button class="add" onclick="location.href='@Url.Action("CreateNumber", "Read")'">
+        <span class="add-img"></span>
+        <span class="but-text">Добавить номер</span>
+    </button>
+</div>
+
+@*<button type="button" class="btn btn-default" onclick="location.href='@Url.Action("CreateNumber", "Read")'">
+    <span class="glyphicon glyphicon-plus"></span> Добавить номер
+</button>*@
+
+<table>
+    <thead>
+        <tr class="trHead">
+            <th>Имя</th>
+            <th>Номер</th>
+            <th>Заметка</th>
+            @*<th>#</th>
+            <th>#</th>*@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var number in Model)
+        {
+            <tr>
+                <td>@number.Name</td>
+                <td>@number.Number</td>
+                <td>@number.Note</td>
+                <td>
+                    <div class="actions">
+                        <a href="@Url.Action("EditNumber", "Read", new { phone = number.Number })" class="action-edit" title="Редактировать"></a>
+                        <a href="@Url.Action("DeleteNumber", "Read", new { phone = number.Number })" class="action-delete" title="Удалить"></a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
